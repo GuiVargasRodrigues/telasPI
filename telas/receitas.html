@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receitas e Agendamentos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <section id="agenda-exames">
+        <header class="header-bar">
+            <h1>RECEITAS E AGENDAMENTOS</h1>
+        </header>
+        <div class="content">
+            <form id="form-agenda">
+                <label for="nome-exame">Nome do Exame:</label>
+                <input type="text" id="nome-exame" placeholder="Ex.: Hemograma Completo" required>
+                <label for="data-exame">Data do Exame:</label>
+                <input type="date" id="data-exame" required>
+                <label for="anexo-receita">Anexar Receita:</label>
+                <input type="file" id="anexo-receita" accept="image/*,.pdf">
+                <button type="submit">Salvar</button>
+            </form>
+            <h2>Exames Agendados</h2>
+            <ul id="lista-exames"></ul>
+        </div>
+    </section>
+    <script src="receitas.js"></script>
+</body>
+</html>
