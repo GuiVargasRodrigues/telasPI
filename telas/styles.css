@@ -21,16 +21,16 @@ body {
 nav {
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-color: #87ceeb;
+    justify-content: space-between;
+    background-color: #87ceeb; 
     color: black;
-    padding: 20px 20px;
-    border-bottom-left-radius: 90%;
-    border-bottom-right-radius: 90%;
+    padding: 30px 20px;
+    border-bottom-left-radius: 150%;
+    border-bottom-right-radius: 150%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    height: auto;
-    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
 }
 
 nav h2 {
