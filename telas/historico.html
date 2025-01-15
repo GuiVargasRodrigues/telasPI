@@ -7,24 +7,26 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <section id="historico-paciente">
-        <header class="header-bar">
-            <h1>HISTÓRICO DO PACIENTE</h1>
-        </header>
-        <div class="content">
-            <form id="form-historico">
-                <label for="condicao-saude">Condição de Saúde:</label>
-                <input type="text" id="condicao-saude" placeholder="Ex.: Hipertensão" required>
-                <label for="alergias">Alergias:</label>
-                <input type="text" id="alergias" placeholder="Ex.: Amendoim" required>
-                <button type="submit">Adicionar</button>
-            </form>
-            <h2>Condições de Saúde</h2>
-            <ul id="lista-condicoes"></ul>
-            <h2>Alergias</h2>
-            <ul id="lista-alergias"></ul>
-        </div>
-    </section>
-    <script src="historico.js"></script>
+    <nav>
+        <h2>MEDKIT</h2>
+    </nav>
+    <header>
+        <h1>Histórico do Paciente</h1>
+    </header>
+
+    <div class="container">
+        <form id="form-historico">
+            <label for="condicoes">Condições de Saúde:</label>
+            <textarea id="condicoes" name="condicoes" required></textarea>
+
+            <label for="alergias">Alergias:</label>
+            <textarea id="alergias" name="alergias" required></textarea>
+
+            <button type="submit">Salvar</button>
+        </form>
+        <div id="message"></div>
+        <h2>Registros médicos</h2>
+        <ul id="lista-historico"></ul>
+    </div>
 </body>
 </html>
