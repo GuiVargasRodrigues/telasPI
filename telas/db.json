@@ -1,0 +1,49 @@
+{
+    "database": "medkit",
+    "tables": [
+      {
+        "name": "usuarios",
+        "columns": {
+          "id_usuario": "INT AUTO_INCREMENT PRIMARY KEY",
+          "cpf": "VARCHAR(14) NOT NULL",
+          "senha": "VARCHAR(255) NOT NULL",
+          "nome": "VARCHAR(100) NOT NULL",
+          "data_nascimento": "DATE NOT NULL",
+          "genero": "ENUM('M', 'F', 'O') NOT NULL",
+          "email": "VARCHAR(100) NOT NULL",
+          "telefone": "VARCHAR(15) NOT NULL",
+          "endereco_completo": "TEXT NOT NULL"
+        },
+        "rows": []
+      },
+      {
+        "name": "historico_paciente",
+        "columns": {
+          "id_historico": "INT AUTO_INCREMENT PRIMARY KEY",
+          "id_usuario": "INT NOT NULL",
+          "condicoes": "TEXT NOT NULL",
+          "alergias": "TEXT NOT NULL",
+          "data_registro": "DATETIME DEFAULT CURRENT_TIMESTAMP"
+        },
+        "foreign_keys": {
+          "id_usuario": "REFERENCES usuarios(id_usuario)"
+        },
+        "rows": []
+      },
+      {
+        "name": "receitas",
+        "columns": {
+          "id_receita": "INT AUTO_INCREMENT PRIMARY KEY",
+          "id_usuario": "INT NOT NULL",
+          "nome_exame": "VARCHAR(255) NOT NULL",
+          "data_exame": "DATE NOT NULL",
+          "anexo": "VARCHAR(255)"
+        },
+        "foreign_keys": {
+          "id_usuario": "REFERENCES usuarios(id_usuario)"
+        },
+        "rows": []
+      }
+    ]
+  }
+  
