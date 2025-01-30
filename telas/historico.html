@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,7 @@
     </header>
 
     <div class="container">
-        <form id="form-historico">
+        <form id="historico-form">
             <label for="condicoes">Condições de Saúde:</label>
             <textarea id="condicoes" name="condicoes" required></textarea>
 
@@ -24,9 +24,28 @@
 
             <button type="submit">Salvar</button>
         </form>
-        <div id="message"></div>
-        <h2>Registros médicos</h2>
-        <ul id="lista-historico"></ul>
     </div>
+
+    <script>
+        document.getElementById("historico-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const condicoes = document.getElementById("condicoes").value;
+            const alergias = document.getElementById("alergias").value;
+
+            const response = await fetch("http://localhost:3000/historico", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ condicoes: condicoes, alergias: alergias })
+            });
+
+            if (response.ok) {
+                alert("Histórico salvo com sucesso!");
+                document.getElementById("historico-form").reset();
+            } else {
+                alert("Erro ao salvar.");
+            }
+        });
+    </script>
 </body>
 </html>

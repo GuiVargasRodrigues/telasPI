@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,25 +11,58 @@
         <h2>MEDKIT</h2>
     </nav>
     <header>
-        <h1>Receitas e Agendamentos</h1>
+        <h1>Receitas</h1>
     </header>
 
     <div class="container">
-        <form id="form-receitas">
-            <label for="nome-exame">Nome do Exame:</label>
-            <input type="text" id="nome-exame" name="nome-exame" required>
+        <form id="receita-form" enctype="multipart/form-data">
+            <label for="nome_medicamento">Nome do Medicamento:</label>
+            <input type="text" id="nome_medicamento" name="nome_medicamento" required>
 
-            <label for="data-exame">Data do Exame:</label>
-            <input type="date" id="data-exame" name="data-exame" required>
+            <label for="validade">Data da Validade:</label>
+            <input type="date" id="validade" name="validade" required>
 
-            <label for="anexo-receita">Anexar Receita:</label>
-            <input type="file" id="anexo-receita" name="anexo-receita" accept="image/*,.pdf">
+            <label for="anexo-receita">Anexo da Receita:</label>
+            <input type="file" id="anexo-receita" name="anexo-receita" required>
 
             <button type="submit">Salvar</button>
         </form>
-        <div id="message"></div>
-        <h2>Exames Agendados</h2>
-        <ul id="lista-exames"></ul>
     </div>
+
+    <script>
+        document.getElementById("receita-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const nomeExame = document.getElementById("nome_medicamento").value;
+            const dataExame = document.getElementById("validade").value;
+            const anexo = document.getElementById("anexo-receita").files[0];
+            const idUsuario = 1;  // Add logic to retrieve user id
+
+            data = {
+                "id_usuario": idUsuario,
+                "nome_medicamento": nomeExame,
+                "validade": dataExame,
+                "anexo_receita": anexo,
+            }
+
+            // const formData = new FormData();
+            // formData.append("nome_medicamento", nomeExame);
+            // formData.append("validade", dataExame);
+            // formData.append("id_usuario", idUsuario);
+            // formData.append("anexo", anexo);
+
+            const response = await fetch("http://localhost:3000/receitas", {
+                method: "POST",
+                body: data
+            });
+
+            if (response.ok) {
+                alert("Receita salva com sucesso!");
+                document.getElementById("receita-form").reset();
+            } else {
+                alert("Erro ao salvar.");
+            }
+        });
+    </script>
 </body>
 </html>

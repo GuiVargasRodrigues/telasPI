@@ -1,74 +1,55 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
+const express = require("express");
+const mysql = require("mysql2");
+const cors = require("cors");
+const multer = require("multer");
+const path = require("path");
 
 const app = express();
-const port = 3000;
+app.use(express.json());
+app.use(cors());
 
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
-
+// Set up multer for file upload handling
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/');
+        cb(null, 'uploads/'); // specify the folder to store files
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
+        cb(null, Date.now() + path.extname(file.originalname)); // add unique name to avoid overwriting
     }
 });
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(express.static('public'));
-app.use('/uploads', express.static('uploads'));
-
-let receitas = [];
-let historicoPaciente = [];
-
-app.get('/receitas', (req, res) => {
-    res.sendFile(path.join(__dirname, 'receitas.html'));
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "root",
+    database: "medkit"
 });
 
-app.get('/historico', (req, res) => {
-    res.sendFile(path.join(__dirname, 'historico.html'));
+db.connect(err => {
+    if (err) {
+        console.error("Erro ao conectar ao banco de dados:", err);
+        return;
+    }
+    console.log("Conectado ao banco de dados.");
 });
 
-app.post('/receitas', upload.single('anexo-receita'), (req, res) => {
-    const { nomeExame, dataExame } = req.body;
-    const receita = {
-        nomeExame,
-        dataExame,
-        anexo: req.file ? `/uploads/${req.file.filename}` : null
-    };
-    receitas.push(receita);
-    res.json({ message: 'Receita salva com sucesso!', receitas });
+// Handling POST request for saving a recipe
+app.post("/receitas", upload.single('anexo'), (req, res) => {
+    const { nome_medicamento, validade, id_usuario } = req.body;
+    const anexo_receita = req.file ? req.file.filename : ''; // Get the file name from multer
+
+    db.query("INSERT INTO receitas (id_usuario, nome_medicamento, validade, anexo_receita) VALUES (?, ?, ?, ?)", 
+        [id_usuario, nome_medicamento, validade, anexo_receita], 
+        (err, result) => {
+            if (err) {
+                console.error("Erro ao inserir no banco:", err);
+                return res.status(500).send("Erro ao salvar a receita.");
+            }
+            res.status(200).json({ message: "Receita salva com sucesso." });
+        });
 });
 
-app.get('/receitas/lista', (req, res) => {
-    res.json(receitas);
+app.listen(3000, () => {
+    console.log("Servidor rodando na porta 3000.");
 });
-
-app.post('/historico', (req, res) => {
-    const { condicoes, alergias } = req.body;
-    const registro = {
-        condicoes,
-        alergias,
-        data: new Date().toISOString()
-    };
-    historicoPaciente.push(registro);
-    res.json({ message: 'Histórico salvo com sucesso!', historicoPaciente });
-});
-
-app.get('/historico/lista', (req, res) => {
-    res.json(historicoPaciente);
-});
-
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
-});
-  

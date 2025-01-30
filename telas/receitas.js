@@ -5,14 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('form-agenda').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const nomeExame = document.getElementById('nome-exame').value.trim();
-    const dataExame = document.getElementById('data-exame').value;
+    const nomeExame = document.getElementById('nome_medicamento').value.trim();
+    const dataExame = document.getElementById('validade').value;
     const anexo = document.getElementById('anexo-receita').files[0];
 
     if (nomeExame && dataExame && anexo) {
         const formData = new FormData();
-        formData.append('nomeExame', nomeExame);
-        formData.append('dataExame', dataExame);
+        formData.append('nome_medicamento', nomeExame);
+        formData.append('validade', dataExame);
         formData.append('anexo', anexo);
 
         fetch('http://localhost:3000/receitas', {
@@ -37,7 +37,7 @@ function carregarExames() {
 
             data.forEach(item => {
                 const li = document.createElement('li');
-                li.textContent = `Exame: ${item.nomeExame} | Data: ${item.dataExame} | Receita: ${item.anexo}`;
+                li.textContent = `Exame: ${item.nomeExame} | Data: ${item.validade} | Receita: ${item.anexo}`;
                 listaExames.appendChild(li);
             });
         })
