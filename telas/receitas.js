@@ -11,8 +11,8 @@ document.getElementById('form-agenda').addEventListener('submit', function (even
 
     if (nomeExame && dataExame && anexo) {
         const formData = new FormData();
-        formData.append('nome_medicamento', nomeExame);
-        formData.append('validade', dataExame);
+        formData.append('nome_medicamento', nomeMedicamento);
+        formData.append('validade', dataValidade);
         formData.append('anexo', anexo);
 
         fetch('http://localhost:3000/receitas', {
