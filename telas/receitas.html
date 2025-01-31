@@ -33,15 +33,15 @@
         document.getElementById("receita-form").addEventListener("submit", async function(event) {
             event.preventDefault();
 
-            const nomeExame = document.getElementById("nome_medicamento").value;
-            const dataExame = document.getElementById("validade").value;
+            const nomeMedicamento = document.getElementById("nome_medicamento").value;
+            const dataValidade = document.getElementById("validade").value;
             const anexo = document.getElementById("anexo-receita").files[0];
             const idUsuario = 1;  // Add logic to retrieve user id
 
             data = {
                 "id_usuario": idUsuario,
-                "nome_medicamento": nomeExame,
-                "validade": dataExame,
+                "nome_medicamento": nomeMedicamento,
+                "validade": dataValidade,
                 "anexo_receita": anexo,
             }
 
