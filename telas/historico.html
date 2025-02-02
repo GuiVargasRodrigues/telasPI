@@ -13,30 +13,29 @@
     <header>
         <h1>Histórico do Paciente</h1>
     </header>
-
     <div class="container">
         <form id="historico-form">
-            <label for="condicoes">Condições de Saúde:</label>
-            <textarea id="condicoes" name="condicoes" required></textarea>
-
-            <label for="alergias">Alergias:</label>
-            <textarea id="alergias" name="alergias" required></textarea>
-
-            <button type="submit">Salvar</button>
+            <div class="input-group">
+                <label for="condicoes">Condições de Saúde:</label>
+                <textarea id="condicoes" name="condicoes" rows="3" required></textarea>
+            </div>
+            <div class="input-group">
+                <label for="alergias">Alergias:</label>
+                <textarea id="alergias" name="alergias" rows="3" required></textarea>
+            </div>
+            <button type="submit">SALVAR</button>
         </form>
     </div>
-
     <script>
         document.getElementById("historico-form").addEventListener("submit", async function(event) {
             event.preventDefault();
-
             const condicoes = document.getElementById("condicoes").value;
             const alergias = document.getElementById("alergias").value;
 
             const response = await fetch("http://localhost:3000/historico", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ condicoes: condicoes, alergias: alergias })
+                body: JSON.stringify({ condicoes, alergias })
             });
 
             if (response.ok) {

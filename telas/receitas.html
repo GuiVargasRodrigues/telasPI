@@ -13,47 +13,38 @@
     <header>
         <h1>Receitas</h1>
     </header>
-
     <div class="container">
         <form id="receita-form" enctype="multipart/form-data">
-            <label for="nome_medicamento">Nome do Medicamento:</label>
-            <input type="text" id="nome_medicamento" name="nome_medicamento" required>
-
-            <label for="validade">Data da Validade:</label>
-            <input type="date" id="validade" name="validade" required>
-
-            <label for="anexo-receita">Anexo da Receita:</label>
-            <input type="file" id="anexo-receita" name="anexo-receita" required>
-
-            <button type="submit">Salvar</button>
+            <div class="input-group">
+                <label for="nome_medicamento">Nome do Medicamento:</label>
+                <input type="text" id="nome_medicamento" name="nome_medicamento" required>
+            </div>
+            <div class="input-group">
+                <label for="validade">Data da Validade:</label>
+                <input type="date" id="validade" name="validade" required>
+            </div>
+            <div class="input-group">
+                <label for="anexo-receita">Anexo da Receita:</label>
+                <input type="file" id="anexo-receita" name="anexo-receita" required>
+            </div>
+            <button type="submit">INCLUIR RECEITA</button>
         </form>
     </div>
-
     <script>
         document.getElementById("receita-form").addEventListener("submit", async function(event) {
             event.preventDefault();
-
             const nomeMedicamento = document.getElementById("nome_medicamento").value;
             const dataValidade = document.getElementById("validade").value;
             const anexo = document.getElementById("anexo-receita").files[0];
-            const idUsuario = 1;  // Add logic to retrieve user id
 
-            data = {
-                "id_usuario": idUsuario,
-                "nome_medicamento": nomeMedicamento,
-                "validade": dataValidade,
-                "anexo_receita": anexo,
-            }
-
-            // const formData = new FormData();
-            // formData.append("nome_medicamento", nomeExame);
-            // formData.append("validade", dataExame);
-            // formData.append("id_usuario", idUsuario);
-            // formData.append("anexo", anexo);
+            const formData = new FormData();
+            formData.append("nome_medicamento", nomeMedicamento);
+            formData.append("validade", dataValidade);
+            formData.append("anexo_receita", anexo);
 
             const response = await fetch("http://localhost:3000/receitas", {
                 method: "POST",
-                body: data
+                body: formData
             });
 
             if (response.ok) {
