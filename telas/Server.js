@@ -3,6 +3,7 @@ const mysql = require("mysql2");
 const cors = require("cors");
 const formidable = require("formidable");
 const path = require("path");
+const fs = require("fs");
 
 const app = express();
 app.use(express.json());
@@ -24,11 +25,18 @@ db.connect(err => {
     console.log("Conectado ao banco de dados.");
 });
 
+// Criar o diretório de uploads, se não existir
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 app.post("/receitas", (req, res) => {
-    const form = formidable({});    
-    form.uploadDir = path.join(__dirname, 'uploads');  // Set upload directory
-    form.keepExtensions = true;  // Keep original file extension
+    // Criando uma nova instância do IncomingForm para processar o envio do arquivo
+    const form = new formidable.IncomingForm(); 
+    form.uploadDir = uploadDir;  // Setar o diretório de upload
+    form.keepExtensions = true;  // Manter a extensão original do arquivo
+
     form.parse(req, (err, fields, files) => {
         if (err) {
             console.error("Erro ao processar o arquivo:", err);
@@ -36,13 +44,13 @@ app.post("/receitas", (req, res) => {
         }
 
         const { nome_medicamento, validade, id_usuario } = fields;
-        const anexo_receita = files.anexo_receita ? files.anexo_receita.newFilename : ''; // Get the file name from formidable
+        const anexo_receita = files.anexo_receita ? files.anexo_receita[0].newFilename : ''; // Obter o nome do arquivo
 
         if (!nome_medicamento || !validade || !id_usuario) {
             return res.status(400).send("Faltando dados obrigatórios.");
         }
 
-        // Insert data into MySQL database
+        // Inserir dados no banco de dados MySQL
         db.query("INSERT INTO receitas (id_usuario, nome_medicamento, validade, anexo_receita) VALUES (?, ?, ?, ?)", 
             [id_usuario, nome_medicamento, validade, anexo_receita], 
             (err, result) => {
@@ -55,7 +63,7 @@ app.post("/receitas", (req, res) => {
     });
 });
 
-// Starting the server
+// Iniciar o servidor
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000.");
 });
