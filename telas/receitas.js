@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('form-agenda').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const nomeExame = document.getElementById('nome_medicamento').value.trim();
-    const dataExame = document.getElementById('validade').value;
+    const nomeMedicamento = document.getElementById('nome_medicamento').value.trim();
+    const dataValidade = document.getElementById('validade').value;
     const anexo = document.getElementById('anexo-receita').files[0];
 
     if (nomeExame && dataExame && anexo) {

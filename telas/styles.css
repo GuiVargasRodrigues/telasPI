@@ -15,16 +15,19 @@ body {
 }
 
 nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #87ceeb;
-    width: 100%;
-    padding: 20px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    border-bottom-left-radius: 50%;
-    border-bottom-right-radius: 50%;
+    color: black;
+    padding: 30px 20px;
+    border-bottom-left-radius: 150%;
+    border-bottom-right-radius: 150%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
 
 header {
     margin: 20px 0;

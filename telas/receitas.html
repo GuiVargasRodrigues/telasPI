@@ -25,33 +25,46 @@
             </div>
             <div class="input-group">
                 <label for="anexo-receita">Anexo da Receita:</label>
-                <input type="file" id="anexo-receita" name="anexo-receita" required>
+                <input type="file" id="anexo-receita" name="anexo-receita" multiple="multiple" required>
             </div>
             <button type="submit">INCLUIR RECEITA</button>
         </form>
     </div>
+
     <script>
+        // When the form is submitted
         document.getElementById("receita-form").addEventListener("submit", async function(event) {
-            event.preventDefault();
+            event.preventDefault();  // Prevent the default form submission
+
+            // Collect data from the form
             const nomeMedicamento = document.getElementById("nome_medicamento").value;
             const dataValidade = document.getElementById("validade").value;
-            const anexo = document.getElementById("anexo-receita").files[0];
+            const anexo = document.getElementById("anexo-receita").files[0];  // Get the uploaded file
 
+            // Create FormData to send the form data and the file
             const formData = new FormData();
             formData.append("nome_medicamento", nomeMedicamento);
             formData.append("validade", dataValidade);
             formData.append("anexo_receita", anexo);
 
-            const response = await fetch("http://localhost:3000/receitas", {
-                method: "POST",
-                body: formData
-            });
+            try {
+                // Send the data to the server via POST request
+                const response = await fetch("http://localhost:3000/receitas", {
+                    method: "POST",
+                    body: formData,
+                });
 
-            if (response.ok) {
-                alert("Receita salva com sucesso!");
-                document.getElementById("receita-form").reset();
-            } else {
-                alert("Erro ao salvar.");
+                // Check the response status
+
+                if (response.ok) {
+                    alert("Receita salva com sucesso!");  // Show success message
+                    document.getElementById("receita-form").reset();  // Reset the form
+                } else {
+                    alert("Erro ao salvar.", response.statusText);  // Show error message if failed
+                }
+            } catch (error) {
+                console.error("Erro ao enviar dados:", error);
+                alert("Erro ao salvar receita.");
             }
         });
     </script>
