@@ -31,8 +31,8 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
+// Endpoint para salvar receitas
 app.post("/receitas", (req, res) => {
-    // Criando uma nova instância do IncomingForm para processar o envio do arquivo
     const form = new formidable.IncomingForm(); 
     form.uploadDir = uploadDir;  // Setar o diretório de upload
     form.keepExtensions = true;  // Manter a extensão original do arquivo
@@ -60,6 +60,50 @@ app.post("/receitas", (req, res) => {
                 }
                 res.status(200).json({ message: "Receita salva com sucesso." });
             });
+    });
+});
+
+
+// Endpoint para salvar histórico
+app.post("/historico", (req, res) => {
+    const { condicao, alergia, id_usuario } = req.body;
+
+    if (!condicao && !alergia) {
+        return res.status(400).send("É necessário fornecer ao menos uma condição ou alergia.");
+    }
+
+    db.query(
+        "INSERT INTO historico (id_usuario, condicao, alergia) VALUES (?, ?, ?)",
+        [id_usuario, condicao || null, alergia || null],
+        (err, result) => {
+            if (err) {
+                console.error("Erro ao salvar no banco de dados:", err);
+                return res.status(500).send("Erro ao salvar no histórico.");
+            }
+            res.status(200).json({ message: "Histórico salvo com sucesso." });
+        }
+    );
+});
+
+// Endpoint para listar receitas
+app.get("/receitas", (req, res) => {
+    db.query("SELECT * FROM receitas", (err, results) => {
+        if (err) {
+            console.error("Erro ao carregar receitas:", err);
+            return res.status(500).send("Erro ao carregar receitas.");
+        }
+        res.status(200).json(results);
+    });
+});
+
+// Endpoint para listar históricos
+app.get("/historico", (req, res) => {
+    db.query("SELECT * FROM historico", (err, results) => {
+        if (err) {
+            console.error("Erro ao carregar históricos:", err);
+            return res.status(500).send("Erro ao carregar históricos.");
+        }
+        res.status(200).json(results);
     });
 });
 
